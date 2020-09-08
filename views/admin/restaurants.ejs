@@ -1,5 +1,40 @@
 <%- include("../partials/header"); %> 
-<div>
-    Admin restaurants
-</div>
+<h1>餐廳後台</h1>
+<a href='/admin/restaurants/create'>
+  <button type="button" class="btn btn-primary">New Restaurant</button>
+</a>
+<br/>
+<br/>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% restaurants.forEach(restaurant => { %> 
+    <tr>
+        <th scope="row"><%= restaurant.id %></th>
+        <td><%= restaurant.name %></td>
+        <td>
+            <button type="button" class="btn btn-link">
+            <a href="/admin/restaurants/<%= restaurant.id %>">
+                Show
+            </a>
+            </button>
+            <button type="button" class="btn btn-link">
+            <a href="/admin/restaurants/<%= restaurant.id %>/edit">
+                Edit
+            </a>
+            </button>
+            <form action="/admin/restaurants/<%= restaurant.id %>?_method=DELETE" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-link">Delete</button>
+            </form>
+        </td>
+    </tr>
+    <% }) %> 
+  </tbody>
+</table>
 <%- include("../partials/footer"); %> 
