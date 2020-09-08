@@ -58,6 +58,16 @@ const adminController = {
                     req.flash("success_msg", "餐廳建立成功");  
                     res.redirect("/admin/restaurants");
                 })
+    },
+    deleteRestaurant: (req, res) => {
+        return Restaurant.findByPk(req.params.id)
+                .then(restaurant=>{
+                    restaurant.destroy()
+                    .then(()=>{
+                        req.flash("success_msg", "刪除成功");
+                        res.redirect("/admin/restaurants");
+                    })
+                })
     }
 }
 
