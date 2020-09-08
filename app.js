@@ -11,7 +11,6 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use(methodOverride("_method"));
-
 app.use(session({
     secret: 'some',
     resave: false,
@@ -30,6 +29,7 @@ app.use((req, res, next)=>{
 })
 
 require("./routes")(app, passport);
+app.use('/upload', express.static(__dirname + '/upload'))
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=>{
     console.log(`Server Start On Port ${PORT}`);
