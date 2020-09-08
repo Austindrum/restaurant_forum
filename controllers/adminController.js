@@ -18,8 +18,32 @@ const adminController = {
                     return res.render('admin/restaurant', { restaurant })
                 })
     },
+    editRestaurant: (req, res) => {
+        return Restaurant.findByPk(req.params.id, { raw: true })
+                .then(restaurant=>{
+                    return res.render("admin/create", { restaurant });              
+                })
+    },
+    putRestaurant: (req, res)=>{
+        let { name, tel, address, opening_hours, description } = req.body;
+        if(!name){
+            req.flash("error_msg", "請輸入店名");
+            return res.redirect("back");
+        }
+        return Restaurant.findByPk(req.params.id)
+                .then(restaurant=>{
+                    restaurant.update({
+                        name, tel, address, opening_hours, description    
+                    })
+                    .then(restaurant=>{
+                        req.flash("success_msg", "餐廳編輯成功");  
+                        res.redirect("/admin/restaurants");
+                    })
+                })
+    },
     createRestaurant: (req, res) => {
-        return res.render('admin/create')
+        let restaurant = "";
+        return res.render('admin/create', { restaurant })
     },
     postRestaurant: (req, res) => {
         let { name, tel, address, opening_hours, description } = req.body;
