@@ -4,6 +4,7 @@ const db = require("./models");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("./config/passport");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,16 +15,18 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
 app.use((req, res, next)=>{
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
     next();
 })
 
-
-require("./routes")(app);
+require("./routes")(app, passport);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=>{
     console.log(`Server Start On Port ${PORT}`);
