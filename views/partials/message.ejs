@@ -1,0 +1,11 @@
+<% if(success_msg.length > 0){ %>
+<div class="alert alert-success" role="alert" style="margin: 30px 0 ;">
+    <%= success_msg %> 
+</div>
+<% }else if(error_msg.length > 0){ %>
+<div class="alert alert-danger" role="alert" style="margin: 30px 0 ;">
+    <%= error_msg %>
+</div>
+<% }else{ %>
+<div></div>
+<% } %> 
