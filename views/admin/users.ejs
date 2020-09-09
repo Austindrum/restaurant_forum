@@ -1,0 +1,37 @@
+<%- include("../partials/header"); %> 
+<h1>餐廳後台</h1>
+<a href='/admin/restaurants/create'>New Restaurant</a> || 
+<a href="/admin/users">Users</a>
+<br/>
+<br/>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %> 
+    <tr>
+        <th scope="row"><%= user.id %></th>
+        <td><%= user.email %></td>
+        <td><%= user.isAdmin ? "Admin" : "User" %></td>
+        <td>
+            <% if(user.email === "root@example.com"){ %>
+                <span class="ml-3">Root User</span> 
+            <% }else{ %> 
+                <form action="/admin/users/<%= user.id %>?_method=PUT" method="POST">
+                    <button type="submit" class="btn btn-link">
+                        <%= user.isAdmin ? "Set as User" : "Set as Admin" %>
+                    </button>
+                </form>
+            <% } %> 
+        </td>
+    </tr>
+    <% }) %> 
+  </tbody>
+</table>
+<%- include("../partials/footer"); %> 
