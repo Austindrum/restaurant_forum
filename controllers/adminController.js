@@ -119,6 +119,7 @@ const adminController = {
                         isAdmin: !user.isAdmin
                     })
                     .then(()=>{
+                        req.flash('success_msg', '使用者編輯成功')
                         res.redirect('/admin/users')
                     })
                 })
