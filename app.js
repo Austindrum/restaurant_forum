@@ -6,13 +6,14 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("./config/passport");
 const methodOverride = require("method-override");
+require("dotenv").config();
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use(methodOverride("_method"));
 app.use(session({
-    secret: 'some',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
