@@ -1,4 +1,15 @@
 <%- include("./partials/header"); %> 
+<ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link <%= categoryId === "" ? "active" : "" %>" href="?categoryId=">全部</a>
+    </li>
+    <% categories.forEach(category=>{ %> 
+        <li class="nav-item">
+            <a class="nav-link <%= category.id === parseInt(categoryId) ? "active" : "" %>" href="?categoryId=<%= category.id %>"><%= category.name %></a>
+        </li>
+    <% }) %>
+</ul>
+<br/>
 <div class="row">
     <% restaurants.forEach(restaurant => { %>
       <div class="col-md-4">
