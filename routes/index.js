@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const categoryController = require('../controllers/categoryController.js')
 const multer = require("multer");
 const upload = multer({ dest: 'temp/' })
+const commentController = require('../controllers/commentController.js')
 
 module.exports = (app, passport) =>{
     const authenticated = (req, res, next) => {
@@ -41,6 +42,8 @@ module.exports = (app, passport) =>{
     app.put("/admin/restaurants/:id", authenticatedAdmin, upload.single('image'), adminController.putRestaurant);
     app.get("/admin/users", authenticatedAdmin, adminController.getUsers);
     app.put("/admin/users/:id", authenticatedAdmin, adminController.putUsers);
+
+    app.post('/comments', authenticated, commentController.postComment)
 
     app.get("/signup", userController.signUpPage);
     app.post("/signup", userController.signUp);
