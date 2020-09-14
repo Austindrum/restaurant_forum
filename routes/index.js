@@ -22,7 +22,8 @@ module.exports = (app, passport) =>{
         }
     }
 
-    app.get("/admin/categories", authenticatedAdmin, categoryController.getCategories)
+    app.get("/admin/categories", authenticatedAdmin, categoryController.getCategories);
+    app.post("/admin/categories", authenticatedAdmin, categoryController.postCategory);
  
     app.get("/", authenticated, (req, res) => res.redirect("/restaurants"));
     app.get("/restaurants", authenticated, restController.getRestaurants);
