@@ -30,11 +30,14 @@ const adminController = {
     editRestaurant: (req, res) => {
         return Restaurant.findByPk(req.params.id, { raw: true })
                 .then(restaurant=>{
-                    return res.render("admin/create", { restaurant });              
+                    Category.findAll({raw: true})
+                    .then(categories=>{
+                        return res.render("admin/create", { restaurant, categories });
+                    })
                 })
     },
     putRestaurant: (req, res)=>{
-        let { name, tel, address, opening_hours, description } = req.body;
+        let { name, tel, address, opening_hours, description, categoryId } = req.body;
         let { file } = req
         if(!name){
             req.flash("error_msg", "請輸入店名");
@@ -47,7 +50,8 @@ const adminController = {
                         .then((restaurant) => {
                             restaurant.update({
                                 name, tel, address, opening_hours, description,
-                                image: file ? img.data.link : restaurant.image
+                                image: file ? img.data.link : restaurant.image,
+                                CategoryId: categoryId
                             }).then((restaurant) => {
                                 req.flash('success_msg', '餐廳編輯成功')
                                 res.redirect('/admin/restaurants')
@@ -59,6 +63,7 @@ const adminController = {
                     .then((restaurant) => {
                         restaurant.update({
                             name, tel, address, opening_hours, description,
+                            CategoryId: categoryId,
                             image: restaurant.image
                         }).then((restaurant) => {
                             req.flash('success_msg', '餐廳編輯成功')
@@ -69,10 +74,15 @@ const adminController = {
     },
     createRestaurant: (req, res) => {
         let restaurant = "";
-        return res.render('admin/create', { restaurant })
+        Category.findAll({
+            raw: true,
+            nest: true
+        }).then(categories=>{
+            return res.render('admin/create', { restaurant, categories })
+        })
     },
     postRestaurant: (req, res) => {
-        let { name, tel, address, opening_hours, description } = req.body;
+        let { name, tel, address, opening_hours, description, categoryId } = req.body;
         let { file } = req;
         if(!name){
             req.flash("error_msg", "請輸入店名");
@@ -82,8 +92,9 @@ const adminController = {
             imgur.setClientID(IMGUR_CLIENT_ID);
             imgur.upload(file.path, (err, img)=>{
                 return Restaurant.create({
-                            name, tel, address, opening_hours, description,
-                            image: file ? img.data.link : null
+                            name, tel, address, opening_hours, description, categoryId,
+                            image: file ? img.data.link : null,
+                            CategoryId: categoryId
                         })
                         .then(restaurant=>{
                             req.flash("success_msg", "餐廳建立成功");
@@ -92,8 +103,9 @@ const adminController = {
             })
         }else{
             return Restaurant.create({
-                        name, tel, address, opening_hours, description,
-                        image: ""
+                        name, tel, address, opening_hours, description, categoryId,
+                        image: "",
+                        CategoryId: categoryId
                     })
                     .then(restaurant => {
                         req.flash("success_msg", "餐廳建立成功");  
