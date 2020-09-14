@@ -1,24 +1,35 @@
 <%- include("./partials/header"); %>
 <div class="row">
     <div class="col-md-12">
-      <h1><%= restaurant.name %></h1>
-      <p>[<%= restaurant.Category.name %>]</p>
+      <h1><%= data.name %></h1>
+      <p>[<%= data.Category.name %>]</p>
     </div>
     <div class="col-md-4">
-      <img class="img-responsive center-block" src="<%= restaurant.image %>" style="width: 250px;margin-bottom: 25px;">
+      <img class="img-responsive center-block" src="<%= data.image %>" style="width: 250px;margin-bottom: 25px;">
       <div class="well">
         <ul class="list-unstyled">
-          <li><strong>Opening Hour:</strong> <%= restaurant.opening_hours %></li>
-          <li><strong>Tel:</strong> <%= restaurant.tel %></li>
-          <li><strong>Address:</strong> <%= restaurant.address %></li>
+          <li><strong>Opening Hour:</strong> <%= data.opening_hours %></li>
+          <li><strong>Tel:</strong> <%= data.tel %></li>
+          <li><strong>Address:</strong> <%= data.address %></li>
         </ul>
       </div>
     </div>
     <div class="col-md-8">
-      <p><%= restaurant.description %></p>
+      <p><%= data.description %></p>
     </div>
     <hr>
   </div>
+  <br />
+  <br />
+  <h3>所有評論：</h3>
+  <% data.Comments.forEach(comment=>{ %> 
+    <blockquote class="blockquote mb-0">
+      <h4><a href="/users/<%= comment.User.id %>"><%= comment.User.name %></a></h4>
+      <p><%= comment.text %> </p>
+      <footer class="blockquote-footer"><%= comment.createdAt %></footer>
+    </blockquote>
+    <hr />
+  <% }) %> 
   <br />
   <br />
   <form action="/comments" method="POST">
@@ -26,7 +37,7 @@
       <label for="text">留下評論：</label>
       <textarea class="form-control" id="text" name="text" rows="3"></textarea>
     </div>
-    <input type="hidden" name="restaurantId" value="<%= restaurant.id %>" />
+    <input type="hidden" name="restaurantId" value="<%= data.id %>" />
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 <a href="javascript:history.back()">回上一頁</a>
