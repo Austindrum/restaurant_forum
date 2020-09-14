@@ -14,7 +14,8 @@ const adminController = {
             include: [Category]
         })
         .then(restaurants=>{
-            return res.render("admin/restaurants", { restaurants });
+            let category = null;
+            return res.render("admin/restaurants", { restaurants, category });
         })
     },
     getRestaurant: (req, res) => {
@@ -126,7 +127,8 @@ const adminController = {
     getUsers: (req, res) => {
         return Users.findAll()
                 .then(users=>{
-                    return res.render("admin/users", { users })
+                    let category = null;
+                    return res.render("admin/users", { users, category })
                 })
     },
     putUsers: (req, res) => {

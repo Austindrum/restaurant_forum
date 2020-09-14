@@ -7,10 +7,20 @@
 <br />
 <a href='/admin/restaurants/create' class="btn btn-primary">New Restaurant</a>
 <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-  <form action="/admin/categories" method="POST">
-    <input type="text" placeholder="類別名稱" name="name">
-    <button type="submit">Submit</button>
-  </form>
+  <% if(category !== null){ %> 
+    <% category.forEach(item=>{ %> 
+      <form action="/admin/categories/<%= item.id %>?_method=PUT" method="POST">
+          <input type="text" placeholder="類別名稱" name="name" value="<%= item.name %> ">
+          <button type="submit">Submit</button>
+          <a href="/admin/categories"> or Create New One</a>
+      </form>
+    <% }) %> 
+    <% }else{ %>
+      <form action="/admin/categories" method="POST">
+        <input type="text" placeholder="類別名稱" name="name">
+        <button type="submit">Submit</button>
+      </form>
+    <% } %>
 </div>
 <table class="table">
   <thead class="thead-dark">
