@@ -44,6 +44,7 @@ module.exports = (app, passport) =>{
     app.put("/admin/users/:id", authenticatedAdmin, adminController.putUsers);
 
     app.post('/comments', authenticated, commentController.postComment)
+    app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
     app.get("/signup", userController.signUpPage);
     app.post("/signup", userController.signUp);
