@@ -14,11 +14,8 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres",
-    "protocol": "postgres",
-    "dialectOptions": {
-      "ssl": {"rejectUnauthorized": false}
+    "production": {
+      "use_env_variable": "CLEARDB_DATABASE_URL"
     }
   }
 }

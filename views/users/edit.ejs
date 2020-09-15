@@ -1,0 +1,13 @@
+<%- include("../partials/header"); %> 
+<form action="/users/<%= userData.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" value="<%= userData.name %>">
+    </div>
+    <div class="form-group">
+        <label for="image">Image</label>
+        <input type="file" id="image" name="image" class="form-control">     
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<%- include("../partials/footer"); %> 

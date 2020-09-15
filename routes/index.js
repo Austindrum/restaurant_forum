@@ -2,9 +2,10 @@ const restController = require("../controllers/restContriller");
 const adminController = require("../controllers/adminController");
 const userController = require("../controllers/userController");
 const categoryController = require('../controllers/categoryController.js')
+const commentController = require('../controllers/commentController.js')
 const multer = require("multer");
 const upload = multer({ dest: 'temp/' })
-const commentController = require('../controllers/commentController.js')
+
 
 module.exports = (app, passport) =>{
     const authenticated = (req, res, next) => {
@@ -45,6 +46,10 @@ module.exports = (app, passport) =>{
 
     app.post('/comments', authenticated, commentController.postComment)
     app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
+
+    app.get("/users/:id", authenticated, userController.getUser)
+    app.get("/users/:id/edit", authenticated, userController.editUser)
+    app.put("/users/:id", authenticated, upload.single('image'), userController.putUser)
 
     app.get("/signup", userController.signUpPage);
     app.post("/signup", userController.signUp);
