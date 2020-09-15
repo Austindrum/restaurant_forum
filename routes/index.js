@@ -1,4 +1,4 @@
-const restController = require("../controllers/restContriller");
+const restController = require("../controllers/restController");
 const adminController = require("../controllers/adminController");
 const userController = require("../controllers/userController");
 const categoryController = require('../controllers/categoryController.js')
@@ -32,6 +32,7 @@ module.exports = (app, passport) =>{
     app.get("/", authenticated, (req, res) => res.redirect("/restaurants"));
     app.get('/restaurants/feeds', authenticated, restController.getFeeds)
     app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+    app.get('/restaurants/:id/dashbord', authenticated, restController.getRestaurantDashbord);
     
     app.get("/restaurants", authenticated, restController.getRestaurants);
     app.get("/admin", authenticatedAdmin, (req, res) => res.redirect("/admin/restaurants"));

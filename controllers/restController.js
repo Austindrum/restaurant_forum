@@ -92,6 +92,16 @@ const restController = {
                 })
             })
         })
+    },
+    getRestaurantDashbord: (req, res)=>{
+        return Restaurant.findByPk(req.params.id, {
+                    include: [
+                        Category,
+                        { model: Comment, include: [User] }
+                    ]
+                }).then(restaurant=>{
+                    res.render("restaurantDashbord", { restaurant: restaurant.toJSON() });
+                })
     }
 }
 
