@@ -31,6 +31,12 @@
             </p>
             <span class="badge badge-secondary"><%= restaurant.categoryName %></span>
             <p class="card-text"><%= restaurant.description %></p>
+            <form action="/favorite/<%= restaurant.id %>?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger">移除最愛</button>
+            </form>
+            <form action="/favorite/<%= restaurant.id %>" method="POST">
+              <button type="submit" class="btn btn-primary">加到最愛</button>
+            </form>
           </div>
       </div>
     </div>
