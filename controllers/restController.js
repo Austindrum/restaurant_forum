@@ -56,10 +56,12 @@ const restController = {
                        { model: Comment, include: [User] }
                     ]
                 }).then(restaurant => {
+                    restaurant.increment('viewCount');
                     let data = restaurant.toJSON();
                     data.Comments.forEach(comment=>{
                         comment.createdAt = moment(comment.createdAt).fromNow();
                     })
+                    console.log(data);
                     return res.render('restaurant', { data })
                 })
     },
