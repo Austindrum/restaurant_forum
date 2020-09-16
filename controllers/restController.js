@@ -32,7 +32,8 @@ const restController = {
             let data = result.rows.map(r=>({
                 ...r.dataValues,
                 description: r.dataValues.description.substring(0, 50),
-                categoryName: r.Category.name
+                categoryName: r.Category.name,
+                isFavorited: req.user.FavoritedRestaurants.length > 0 ? req.user.FavoritedRestaurants.map(f => f.id).includes(r.id) : false
             }))
             Category.findAll({ raw: true, nest: true })
             .then(categories=>{
@@ -53,16 +54,17 @@ const restController = {
         return Restaurant.findByPk(req.params.id, {
                    include:  [
                        Category,
-                       { model: Comment, include: [User] }
+                       { model: Comment, include: [User] },
+                       { model: User, as: 'FavoritedUsers' }
                     ]
                 }).then(restaurant => {
                     restaurant.increment('viewCount');
+                    const isFavorited = restaurant.FavoritedUsers.map(f=>f.id).includes(req.user.id);
                     let data = restaurant.toJSON();
                     data.Comments.forEach(comment=>{
                         comment.createdAt = moment(comment.createdAt).fromNow();
                     })
-                    console.log(data);
-                    return res.render('restaurant', { data })
+                    return res.render('restaurant', { data, isFavorited })
                 })
     },
     getFeeds: (req, res) => {
