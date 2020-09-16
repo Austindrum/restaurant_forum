@@ -17,15 +17,24 @@
     <div class="col-md-8">
       <p><%= data.description %></p>
       <div class="d-flex">
-        <a href="/restaurants/<%= data.id %>/dashbord" class="btn btn-primary mr-3">Dashboard</a>
+        <a href="/restaurants/<%= data.id %>/dashbord" class="btn btn-primary mr-2">Dashboard</a>
         <% if(isFavorited){ %> 
-          <form action="/favorite/<%= data.id %>?_method=DELETE" method="POST">
+          <form action="/favorite/<%= data.id %>?_method=DELETE" method="POST" class="mr-2">
             <button type="submit" class="btn btn-danger">移除最愛</button>
           </form>
         <% }else{ %> 
-          <form action="/favorite/<%= data.id %>" method="POST">
+          <form action="/favorite/<%= data.id %>" method="POST" class="mr-2">
             <button type="submit" class="btn btn-primary">加到最愛</button>
           </form>
+        <% } %>
+        <% if(isLike){ %> 
+          <form action="/like/<%= data.id %>?_method=DELETE" method="POST" class="mr-2">
+            <button type="submit" class="btn btn-danger">Unlike</button>
+          </form>
+        <% }else{ %>  
+          <form action="/like/<%= data.id %>" method="POST" class="mr-2">
+            <button type="submit" class="btn btn-primary">Like</button>
+          </form> 
         <% } %>
       </div> 
     </div>

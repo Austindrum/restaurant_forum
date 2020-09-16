@@ -3,6 +3,7 @@ const Restaurant = db.Restaurant
 const Category = db.Category
 const User = db.User
 const Comment = db.Comment
+const Favorite = db.Favorite
 const pageLimit = 10
 const moment = require("moment");
 
@@ -11,7 +12,6 @@ const restController = {
         let offset = 0
         let whereQuery = {}
         let categoryId = ''
-        let onHomePage = true
         if(req.query.page) offset = (req.query.page - 1) * pageLimit
         if(req.query.categoryId){
           categoryId = Number(req.query.categoryId)
@@ -33,7 +33,8 @@ const restController = {
                 ...r.dataValues,
                 description: r.dataValues.description.substring(0, 50),
                 categoryName: r.Category.name,
-                isFavorited: req.user.FavoritedRestaurants.length > 0 ? req.user.FavoritedRestaurants.map(f => f.id).includes(r.id) : false
+                isFavorited: req.user.FavoritedRestaurants.length > 0 ? req.user.FavoritedRestaurants.map(f => f.id).includes(r.id) : false,
+                isLike: req.user.LikeRestaurants.length > 0 ? req.user.LikeRestaurants.map(l => l.id).includes(r.id) : false
             }))
             Category.findAll({ raw: true, nest: true })
             .then(categories=>{
@@ -45,7 +46,6 @@ const restController = {
                     totalPage,
                     prev,
                     next,
-                    onHomePage
                 });
             })
         })
@@ -55,16 +55,18 @@ const restController = {
                    include:  [
                        Category,
                        { model: Comment, include: [User] },
-                       { model: User, as: 'FavoritedUsers' }
+                       { model: User, as: 'FavoritedUsers' },
+                       { model: User, as: 'LikeUsers' }
                     ]
                 }).then(restaurant => {
                     restaurant.increment('viewCount');
                     const isFavorited = restaurant.FavoritedUsers.map(f=>f.id).includes(req.user.id);
+                    const isLike = restaurant.LikeUsers.map(f=>f.id).includes(req.user.id);
                     let data = restaurant.toJSON();
                     data.Comments.forEach(comment=>{
                         comment.createdAt = moment(comment.createdAt).fromNow();
                     })
-                    return res.render('restaurant', { data, isFavorited })
+                    return res.render('restaurant', { data, isFavorited, isLike })
                 })
     },
     getFeeds: (req, res) => {
@@ -104,7 +106,15 @@ const restController = {
                         { model: Comment, include: [User] }
                     ]
                 }).then(restaurant=>{
-                    res.render("restaurantDashbord", { restaurant: restaurant.toJSON() });
+                    Favorite.findAll({
+                        raw: true,
+                        nest: true,
+                        where: {
+                            RestaurantId: restaurant.id
+                        }
+                    }).then(f=>{
+                        res.render("restaurantDashbord", { restaurant: restaurant.toJSON(), favorites: f.length});
+                    })
                 })
     }
 }

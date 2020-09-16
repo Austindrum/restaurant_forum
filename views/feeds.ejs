@@ -40,7 +40,7 @@
         <% commentsData.forEach(comment=>{ %> 
         <div>
             <h4>
-            <a href="/restaurants/"><%= comment.Restaurant.name %></a>
+            <a href="/restaurants/<%= comment.Restaurant.id %>"><%= comment.Restaurant.name %></a>
             </h4>
             <p><%= comment.text %> </p>
             by <a href="/users/<%= comment.User.id %>"><%= comment.User.name %></a>
