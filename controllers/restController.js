@@ -99,6 +99,30 @@ const restController = {
             })
         })
     },
+    getTopRestaurant: (req ,res)=>{
+        return Restaurant.findAll({
+            include: [
+                { model: User, as: 'FavoritedUsers' }
+            ]
+        }).then(restaurants => {
+            let topRestaurants = [];
+            restaurants = restaurants.map(restaurant => ({
+                ...restaurant.dataValues,
+                description: restaurant.dataValues.description.substring(0, 50),
+                favoritedUsers: restaurant.FavoritedUsers.length,
+                isFavorited: restaurant.FavoritedUsers.map(f=>f.id).includes(req.user.id)
+            }))
+            restaurants = restaurants.sort((a, b) => b.favoritedUsers - a.favoritedUsers);
+            restaurants.forEach((restaurant, index)=>{
+                if(restaurant.favoritedUsers > 0){
+                    if(topRestaurants.length < 11){
+                        topRestaurants.push(restaurant);
+                    }
+                }
+            })
+            return res.render("topRestaurant", { topRestaurants });
+        })
+    },
     getRestaurantDashbord: (req, res)=>{
         return Restaurant.findByPk(req.params.id, {
                     include: [
