@@ -46,6 +46,8 @@ module.exports = (app, passport) =>{
     app.get("/admin/users", authenticatedAdmin, adminController.getUsers);
     app.put("/admin/users/:id", authenticatedAdmin, adminController.putUsers);
 
+    app.get('/users/top', authenticated, userController.getTopUser)
+
     app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
     app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
 
