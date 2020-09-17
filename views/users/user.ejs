@@ -20,9 +20,39 @@
 <div class="card mt-3">
   <h5 class="card-header">評論過  <strong><%= commentsNum %> </strong> 間餐廳</h5>
   <div class="card-body d-flex">
-    <% userData.Comments.forEach(comments=>{ %> 
-      <a href="/restaurants/<%= comments.Restaurant.id %>" class="mr-4">
-        <img src="<%= comments.Restaurant.image %>" class="card-img" alt="test" style="width: 80px;height: 80px;">
+    <% comments.forEach(comment=>{ %> 
+      <a href="/restaurants/<%= comment.Restaurant.id %>" class="mr-4">
+        <img src="<%= comment.Restaurant.image %>" class="card-img" alt="test" style="width: 80px;height: 80px;">
+      </a>
+    <% }) %> 
+  </div>
+</div>
+<div class="card mt-3">
+  <h5 class="card-header">收藏  <strong><%= favoritedRestaurantsNum %> </strong> 間餐廳</h5>
+  <div class="card-body d-flex">
+    <% userData.FavoritedRestaurants.forEach(favorite=>{ %> 
+      <a href="/restaurants/<%= favorite.id %>" class="mr-4">
+        <img src="<%= favorite.image %>" class="card-img" alt="test" style="width: 80px;height: 80px;">
+      </a>
+    <% }) %> 
+  </div>
+</div>
+<div class="card mt-3">
+  <h5 class="card-header">追蹤  <strong><%= followingsNum %> </strong> 人</h5>
+  <div class="card-body d-flex">
+    <% userData.Followings.forEach(following=>{ %> 
+      <a href="/users/<%= following.id %>" class="mr-4">
+        <img src="<%= following.image %>" class="card-img" alt="test" style="width: 80px;height: 80px;">
+      </a>
+    <% }) %> 
+  </div>
+</div>
+<div class="card mt-3">
+  <h5 class="card-header">被  <strong><%= followersNum %> </strong> 人追蹤</h5>
+  <div class="card-body d-flex">
+    <% userData.Followers.forEach(follower=>{ %> 
+      <a href="/users/<%= follower.id %>" class="mr-4">
+        <img src="<%= follower.image %>" class="card-img" alt="test" style="width: 80px;height: 80px;">
       </a>
     <% }) %> 
   </div>

@@ -91,12 +91,26 @@ const userController = {
     getUser: (req, res)=>{
         User.findByPk(req.params.id, {
             include: [
-                { model: Comment, include: [Restaurant] }
+                { model: Comment, include: [Restaurant] },
+                { model: Restaurant, as: 'FavoritedRestaurants' },
+                { model: User, as: "Followings" },
+                { model: User, as: "Followers" }
             ]
         })
-        .then(userData=>{
-            let commentsNum = userData.toJSON().Comments.length;
-            res.render("users/user", { userData: userData.toJSON(), commentsNum });
+        .then(userData=>{            
+            let favoritedRestaurantsNum = userData.toJSON().FavoritedRestaurants.length;
+            let followingsNum = userData.toJSON().Followings.length;
+            let followersNum = userData.toJSON().Followers.length;
+            let tempId = [];
+            let comments = [];
+            userData.toJSON().Comments.forEach(comment=>{
+                if(!tempId.includes(comment.Restaurant.id)){
+                    tempId.push(comment.Restaurant.id);
+                    comments.push(comment);
+                }
+            })
+            let commentsNum = comments.length;
+            res.render("users/user", { userData: userData.toJSON(), comments, commentsNum, favoritedRestaurantsNum, followingsNum, followersNum });
         })
     },
     editUser: (req, res)=>{
